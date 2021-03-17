@@ -1,0 +1,29 @@
+if: branch = master
+
+before_install:
+  - sudo apt-get update
+  - sudo apt-get install awscli
+
+language: node_js
+
+node_js:
+  - "stable"
+cache:
+  directories:
+  - node_modules
+
+script:
+  - cd thundercloud && yarn build
+
+deploy:
+  provider: s3
+  access_key_id: $AWS_ACCESS_KEY_ID
+  secret_access_key: $AWS_SECRET_ACCESS_KEY
+  bucket: "thundercloud-react"
+  local_dir: "thundercloud/build"
+  skip_cleanup: true
+  region: us-west-2
+
+after_deploy:
+  - sudo apt-get install awscli
+  - aws cloudfront create-invalidation --distribution-id E3P5ZD2TZ5BDV4 --paths "/*"
