@@ -3,61 +3,44 @@ import Plot from 'react-plotly.js';
 import Paper from '@material-ui/core/Paper'
 import {API_URL} from "../Constants";
 import Box from "@material-ui/core/Box";
+import LinePlot from "./LinePlot";
 
 const axios = require('axios');
-const colors = ["red", "blue", "green"];
+const colors = {1: "red", 2: "blue", 3: "green"};
+const y_axis_labels = {1: "Relative Humidity (%)", 2: "Temperature (deg C)", 3: "Soil Moisture"};
 
 export default function MainPlot(props) {
 
   const [data, setData] = useState();
 
-  console.log(data);
-
   useEffect(() => {
-
     setData(null);
-
-    console.log(API_URL);
     axios.get(API_URL + 'data/').then((response) => {
-      console.log(response);
       setData(response.data);
     });
   }, [props]);
 
 
+  // TODO: investigate plotly subplots so that mouse over highlights all values for given time
+  // TODO: cache data in session cache or elsewhere to avoid tons of queries of db
   if (data) {
     return (
       <Paper>
-        <Box>
+        <Box pt={3}>
           {
             Object.entries(data).map(([key, value]) => {
+              console.log(y_axis_labels[key]);
               return (
-                <Plot
-                  data={[
-                    {
-                      x: value[0]['Data'].map((item) => {
-                        return item['Timestamp']
-                      }),
-                      y: value[0]['Data'].map((item) => {
-                        return item['Value']
-                      }),
-                      type: 'scatter',
-                      mode: 'lines'
-                    }
-                  ]}
-                  layout={{
-                    title: 'A Fancy Plot',
-                    autosize: true
-                  }}
-                  useResizeHandler={true}
-                  style={{width: "100%", height: "100%"}}
+                <LinePlot
+                  x={value[0]['Data'].map((item) => {return item['Timestamp']})}
+                  y={value[0]['Data'].map((item) => {return item['Value']})}
+                  yLabel={y_axis_labels[key]}
                 />
               )
             })
           }
         </Box>
       </Paper>
-
     )
   } else {
     return null
