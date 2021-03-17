@@ -2,11 +2,9 @@ import React from 'react';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Typography from '@material-ui/core/Typography';
 
 import TopBar from "./TopBar";
 import SideBar from "./SideBar";
-import MainPlot from "./MainPlot";
 import ContentPane from "./ContentPane";
 
 const drawerWidth = 240;

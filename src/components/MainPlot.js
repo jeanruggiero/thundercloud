@@ -1,12 +1,11 @@
 import React, {useEffect, useState} from "react";
-import Plot from 'react-plotly.js';
 import Paper from '@material-ui/core/Paper'
 import {API_URL} from "../Constants";
 import Box from "@material-ui/core/Box";
 import LinePlot from "./LinePlot";
 
 const axios = require('axios');
-const colors = {1: "red", 2: "blue", 3: "green"};
+// const colors = {1: "red", 2: "blue", 3: "green"};
 const y_axis_labels = {1: "Relative Humidity (%)", 2: "Temperature (deg C)", 3: "Soil Moisture"};
 
 export default function MainPlot(props) {
